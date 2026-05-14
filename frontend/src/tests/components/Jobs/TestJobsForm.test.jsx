@@ -8,7 +8,7 @@ describe("TestJobForm (mutation resistant) tests", () => {
     render(
       <Router>
         <TestJobForm submitAction={submitAction} />
-      </Router>
+      </Router>,
     );
 
     const sleepMs = screen.getByTestId("TestJobForm-sleepMs");
@@ -30,7 +30,7 @@ describe("TestJobForm (mutation resistant) tests", () => {
     fireEvent.click(submit);
 
     expect(
-      await screen.findByText("sleepMs is required (0 is ok)")
+      await screen.findByText("sleepMs is required (0 is ok)"),
     ).toBeInTheDocument();
 
     expect(submitAction).not.toHaveBeenCalled();
@@ -45,7 +45,7 @@ describe("TestJobForm (mutation resistant) tests", () => {
     fireEvent.click(submit);
 
     expect(
-      await screen.findByText("sleepMs must be positive")
+      await screen.findByText("sleepMs must be positive"),
     ).toBeInTheDocument();
 
     expect(submitAction).not.toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe("TestJobForm (mutation resistant) tests", () => {
     fireEvent.click(submit);
 
     expect(
-      await screen.findByText("sleepMs must be ≤ 60000")
+      await screen.findByText("sleepMs must be ≤ 60000"),
     ).toBeInTheDocument();
 
     expect(submitAction).not.toHaveBeenCalled();
