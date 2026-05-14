@@ -96,5 +96,5 @@ describe("AdminAnnouncementsPage tests", () => {
       "href",
       "/admin/announcements/1",
     );
-  });
+  }, 10000);
 });

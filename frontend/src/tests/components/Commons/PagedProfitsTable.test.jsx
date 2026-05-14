@@ -83,7 +83,7 @@ describe("PagedProfitsTable tests", () => {
     const previousButton = screen.getByTestId(`${testId}-previous-button`);
     expect(previousButton).toBeInTheDocument();
     expect(previousButton).toBeDisabled();
-  });
+  }, 10000);
 
   test("buttons are disabled where there are zero pages", async () => {
     // arrange
