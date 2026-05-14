@@ -47,6 +47,30 @@ vi.mock("react-router", async () => {
   };
 });
 
+// Add these two mocks near the top of ChatHistoryPage.test.jsx
+
+vi.mock("main/components/Chat/ChatMessageCreate", () => {
+  return {
+    __esModule: true,
+    default: ({ commonsId }) => (
+      <div data-testid="ChatMessageCreate">Create for {commonsId}</div>
+    ),
+  };
+});
+
+vi.mock("main/components/Chat/ChatMessageDisplay", () => {
+  return {
+    __esModule: true,
+    default: ({ message }) => (
+      <div data-testid={`ChatMessageDisplay-${message.id}`}>
+        <span data-testid={`ChatMessageDisplay-${message.id}-User`}>
+          {message.username || "Anonymous"}
+        </span>
+      </div>
+    ),
+  };
+});
+
 describe("ChatHistoryPage", () => {
   const axiosMock = new AxiosMockAdapter(axios);
 
@@ -127,6 +151,8 @@ describe("ChatHistoryPage", () => {
         </MemoryRouter>
       </QueryClientProvider>,
     );
+
+    expect(screen.getByTestId("ChatMessageCreate")).toBeInTheDocument();
 
     const container = await screen.findByTestId(
       "ChatHistoryPage-message-container",
@@ -644,5 +670,34 @@ describe("ChatHistoryPage", () => {
 
     unmount();
     expect(unobserve).toHaveBeenCalled();
+  });
+
+  test("readOnly mode shows Admin Read Only label and hides ChatMessageCreate", async () => {
+    setupCommonMocks();
+
+    const useInfiniteQuerySpy = mockInfiniteQuery({
+      status: "success",
+      data: { pages: [{ content: [] }] },
+      hasNextPage: false,
+      isFetching: false,
+      isFetchingNextPage: false,
+    });
+
+    const queryClient = new QueryClient();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <ChatHistoryPage readOnly={true} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // Covers:  Commons #{commonsId} {readOnly && "• Admin Read Only"}
+    expect(screen.getByText(/Admin Read Only/)).toBeInTheDocument();
+
+    // Covers:  {!readOnly && <ChatMessageCreate .../>}  (false branch)
+    expect(screen.queryByTestId("ChatMessageCreate")).not.toBeInTheDocument();
+
+    useInfiniteQuerySpy.mockRestore();
   });
 });
