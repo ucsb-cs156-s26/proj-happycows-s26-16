@@ -138,7 +138,7 @@ describe("ChatHistoryPage", () => {
     expect(container).toHaveStyle("border: 1px solid #dee2e6");
     expect(container).toHaveStyle("border-radius: 0.5rem");
     expect(container).toHaveStyle("padding: 1rem");
-    expect(container).toHaveStyle("background-color: white");
+    expect(container).toHaveStyle("background-color: rgb(255, 255, 255)");
 
     expect(screen.getByTestId("ChatMessageDisplay-1")).toBeInTheDocument();
     expect(screen.getByTestId("ChatMessageDisplay-1-User")).toHaveTextContent(

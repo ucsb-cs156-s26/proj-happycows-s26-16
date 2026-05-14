@@ -218,7 +218,7 @@ describe("PlayPage tests", () => {
     expect(div).toHaveAttribute(
       "style",
       expect.stringContaining(
-        "background-size: cover; background-image: url(/src/assets/PlayPageBackground.jpg);",
+        'background-size: cover; background-image: url("/src/assets/PlayPageBackground.jpg");',
       ),
     );
   });
@@ -295,8 +295,8 @@ describe("PlayPage tests", () => {
             width: 60px;
             height: 60px;
             border-radius: 25%;
-            background-color: lightblue;
-            color: black;
+            background-color: rgb(173, 216, 230);
+            color: rgb(0, 0, 0);
             position: fixed;
             bottom: 30px;
             right: 30px;

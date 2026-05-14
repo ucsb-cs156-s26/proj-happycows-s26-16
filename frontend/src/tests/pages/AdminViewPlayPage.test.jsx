@@ -177,8 +177,8 @@ describe("AdminViewPlayPage tests", () => {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: lightblue;
-            color: black;
+            background-color: rgb(173, 216, 230);
+            color: rgb(0, 0, 0);
             position: fixed;
             bottom: 20px;
             right: 20px;

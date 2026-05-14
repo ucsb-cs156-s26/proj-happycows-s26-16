@@ -91,7 +91,7 @@ describe("LeaderboardPage tests", () => {
     );
     expect(leaderboard_main_div).toHaveAttribute(
       "style",
-      "background-size: cover; background-image: url(/src/assets/PlayPageBackground.png);",
+      'background-size: cover; background-image: url("/src/assets/PlayPageBackground.png");',
     );
 
     expect(leaderboard_back_button).toBeInTheDocument();
