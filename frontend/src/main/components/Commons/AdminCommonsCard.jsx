@@ -239,8 +239,9 @@ export default function AdminCommonsCard({ commonItem, currentUser }) {
             <Button
               variant="info"
               size="sm"
-              href={`/admin/chat/${commons.id}`}
+              // href={`/admin/chat/${commons.id}`}
               data-testid={`AdminCommonsCard-Chat-${commons.id}`}
+              onClick={() => navigate(`/admin/chat/${commons.id}`)}
             >
               Chat
             </Button>
