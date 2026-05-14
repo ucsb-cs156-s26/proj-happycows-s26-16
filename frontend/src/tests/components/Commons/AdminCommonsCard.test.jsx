@@ -432,7 +432,6 @@ describe("AdminCommonsCard tests", () => {
     const queryClient = new QueryClient();
     const commonItem = commonsPlusFixtures.threeCommonsPlus[0];
     const currentUser = currentUserFixtures.adminUser;
-
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -446,6 +445,11 @@ describe("AdminCommonsCard tests", () => {
     expect(screen.getByText("Leaderboard")).toBeInTheDocument();
     expect(screen.getByText("Stats CSV")).toBeInTheDocument();
     expect(screen.getByText("Announcements")).toBeInTheDocument();
+
+    // Use the button testid so we don't accidentally match "Show Chat:" label
+    expect(screen.getByTestId("AdminCommonsCard-Chat-1")).toHaveTextContent(
+      "Chat",
+    );
   });
 
   test("displays all field labels correctly", () => {
@@ -668,6 +672,25 @@ describe("AdminCommonsCard tests", () => {
       "href",
       "/admin/announcements/1",
     );
+  });
+
+  test("chat button navigates to chat page", () => {
+    const queryClient = new QueryClient();
+    const commonItem = commonsPlusFixtures.threeCommonsPlus[0];
+    const currentUser = currentUserFixtures.adminUser;
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AdminCommonsCard commonItem={commonItem} currentUser={currentUser} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    const chatButton = screen.getByTestId("AdminCommonsCard-Chat-1");
+    fireEvent.click(chatButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith("/admin/chat/1");
   });
 
   test("handles null totalCows and effectiveCapacity", () => {
