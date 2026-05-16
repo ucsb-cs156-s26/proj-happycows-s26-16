@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Utils/HomePageBackground.jsx</title>
+    <title>Code coverage report for components/Jobs/RecordCommonStatsForm.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Utils</a> HomePageBackground.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Jobs</a> RecordCommonStatsForm.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -80,40 +80,61 @@
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">56x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">56x</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-yes">53x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">56x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import BackgroundDay from "./../../../assets/HomePageBackground-day.jpg";
-import BackgroundEvening from "./../../../assets/HomePageBackground-evening.jpg";
-import BackgroundMorning from "./../../../assets/HomePageBackground-morning.jpg";
-import BackgroundNight from "./../../../assets/HomePageBackground-night.jpg";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 &nbsp;
-// istanbul ignore next: trivial function to ignore from coverage due to how it is structured. Should be refactored in the future so that it can be tested.
-export default function getBackgroundImage(time) {
-  if (time &gt;= 6 &amp;&amp; time &lt; 9) {
-    return BackgroundMorning;
-  } else if (time &gt;= 9 &amp;&amp; time &lt; 18) {
-    return BackgroundDay;
-  } else if (time &gt;= 18 &amp;&amp; time &lt; 21) {
-    return BackgroundEvening;
-  } else {
-    return BackgroundNight;
-  }
+function RecordCommonStatsForm({
+  submitAction = () =&gt; {},
+  testid = "RecordCommonStatsForm",
+}) {
+  const { handleSubmit } = useForm(); //wraps form submission to handle the form data
+  return (
+    &lt;Form onSubmit={handleSubmit(submitAction)} data-testid={testid}&gt;
+      &lt;Form.Group className="mb-3"&gt;
+        &lt;Form.Text&gt;
+          Record statistics for all commons. This will create a CommonStats
+          record for each commons with current health and profit data.
+        &lt;/Form.Text&gt;
+      &lt;/Form.Group&gt;
+      &lt;Button type="submit" data-testid="RecordCommonStatsForm-Submit-Button"&gt;
+        Record Stats
+      &lt;/Button&gt;
+    &lt;/Form&gt;
+  );
 }
+&nbsp;
+export default RecordCommonStatsForm;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
