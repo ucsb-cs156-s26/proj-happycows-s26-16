@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Commons/Profits.jsx</title>
+    <title>Code coverage report for components/Jobs/RecordCommonStatsForm.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Commons</a> Profits.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Jobs</a> RecordCommonStatsForm.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -87,63 +87,54 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import { Card } from "react-bootstrap";
-import PagedProfitsTable from "main/components/Commons/PagedProfitsTable";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 &nbsp;
-const Profits = () =&gt; {
+function RecordCommonStatsForm({
+  submitAction = () =&gt; {},
+  testid = "RecordCommonStatsForm",
+}) {
+  const { handleSubmit } = useForm(); //wraps form submission to handle the form data
   return (
-    &lt;Card&gt;
-      &lt;Card.Header as="h5" className="woodenboardtable"&gt;
-        Profits
-      &lt;/Card.Header&gt;
-      &lt;Card.Body
-        style={
-          // Stryker disable next-line all: don't test CSS params
-          { backgroundColor: "rgb(245, 210, 140)" }
-        }
-      &gt;
-        {/* change 4am to admin-appointed time? And consider adding milk bottle as decoration */}
-        &lt;Card.Title&gt;
-          You will earn profits from milking your cows everyday at 4am.
-        &lt;/Card.Title&gt;
-        &lt;PagedProfitsTable /&gt;
-      &lt;/Card.Body&gt;
-    &lt;/Card&gt;
+    &lt;Form onSubmit={handleSubmit(submitAction)} data-testid={testid}&gt;
+      &lt;Form.Group className="mb-3"&gt;
+        &lt;Form.Text&gt;
+          Record statistics for all commons. This will create a CommonStats
+          record for each commons with current health and profit data.
+        &lt;/Form.Text&gt;
+      &lt;/Form.Group&gt;
+      &lt;Button type="submit" data-testid="RecordCommonStatsForm-Submit-Button"&gt;
+        Record Stats
+      &lt;/Button&gt;
+    &lt;/Form&gt;
   );
-};
+}
 &nbsp;
-export default Profits;
+export default RecordCommonStatsForm;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
