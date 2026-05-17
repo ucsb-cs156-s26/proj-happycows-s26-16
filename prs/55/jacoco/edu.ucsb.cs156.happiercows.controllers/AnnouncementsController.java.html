@@ -122,28 +122,28 @@ import java.util.Optional;
     public ResponseEntity&lt;Object&gt; getCurrentAnnouncements(
         @Parameter(description = &quot;The id of the commons&quot;) @RequestParam Long commonsId) {
 
-<span class="nc" id="L125">        User user = getCurrentUser().getUser();</span>
-<span class="nc" id="L126">        Long userId = user.getId();</span>
+<span class="fc" id="L125">        User user = getCurrentUser().getUser();</span>
+<span class="fc" id="L126">        Long userId = user.getId();</span>
 
-<span class="nc" id="L128">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))) {</span>
-<span class="nc" id="L130">            Optional&lt;UserCommons&gt; userCommonsLookup =</span>
-<span class="nc" id="L131">                userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
+<span class="fc" id="L128">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))) {</span>
+<span class="fc" id="L130">            Optional&lt;UserCommons&gt; userCommonsLookup =</span>
+<span class="fc" id="L131">                userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (!userCommonsLookup.isPresent()) {</span>
-<span class="nc" id="L134">                return ResponseEntity.status(HttpStatus.FORBIDDEN)</span>
-<span class="nc" id="L135">                    .body(&quot;User is not a member of this commons.&quot;);</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
+<span class="fc" id="L134">                return ResponseEntity.status(HttpStatus.FORBIDDEN)</span>
+<span class="fc" id="L135">                    .body(&quot;User is not a member of this commons.&quot;);</span>
             }
         }
 
-<span class="nc" id="L139">        int MAX_ANNOUNCEMENTS = 1000;</span>
-<span class="nc" id="L140">        Page&lt;Announcement&gt; announcements =</span>
-<span class="nc" id="L141">            announcementRepository.findCurrentByCommonsId(</span>
+<span class="fc" id="L139">        int MAX_ANNOUNCEMENTS = 1000;</span>
+<span class="fc" id="L140">        Page&lt;Announcement&gt; announcements =</span>
+<span class="fc" id="L141">            announcementRepository.findCurrentByCommonsId(</span>
                 commonsId,
-<span class="nc" id="L143">                PageRequest.of(0, MAX_ANNOUNCEMENTS, Sort.by(&quot;startDate&quot;).descending())</span>
+<span class="fc" id="L143">                PageRequest.of(0, MAX_ANNOUNCEMENTS, Sort.by(&quot;startDate&quot;).descending())</span>
             );
 
-<span class="nc" id="L146">        return ResponseEntity.ok(announcements.getContent());</span>
+<span class="fc" id="L146">        return ResponseEntity.ok(announcements.getContent());</span>
     }
 
     @Operation(summary = &quot;Get announcements by id&quot;, description = &quot;Get announcement by its id.&quot;)
