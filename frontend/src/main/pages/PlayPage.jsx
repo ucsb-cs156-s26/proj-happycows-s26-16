@@ -14,7 +14,7 @@ import { useCurrentUser } from "main/utils/currentUser";
 import Background from "../../assets/PlayPageBackground.jpg";
 import ChatPanel from "main/components/Chat/ChatPanel";
 import ManageCowsModal from "main/components/Commons/ManageCowsModal";
-
+import CurrentAnnouncements from "main/components/Announcement/CurrentAnnouncements";
 export default function PlayPage() {
   const { commonsId } = useParams();
   const { data: currentUser } = useCurrentUser();
@@ -56,6 +56,19 @@ export default function PlayPage() {
   );
   // Stryker restore all
 
+  // Stryker disable all
+  const { data: currentAnnouncements } = useBackend(
+    [`/api/announcements/current?commonsId=${commonsId}`],
+    {
+      method: "GET",
+      url: "/api/announcements/current",
+      params: {
+        commonsId: commonsId,
+      },
+    },
+  );
+  // Stryker restore all
+
   const commonsPlusExists = !(typeof commonsPlus == "undefined");
   let commonsforuser;
   let matched;
@@ -83,7 +96,7 @@ export default function PlayPage() {
 
   // Stryker restore all
 
-  // Stryker disable all (can't check if commonsId is null because it is mocked)
+  // Stryker disable all
   const objectToAxiosParamsBuy = (newUserCommons) => ({
     url: "/api/usercommons/buy",
     method: "PUT",
@@ -96,12 +109,9 @@ export default function PlayPage() {
   // Stryker restore all
 
   // Stryker disable all
-  const mutationbuy = useBackendMutation(
-    objectToAxiosParamsBuy,
-    null,
-    // Stryker disable next-line all : hard to set up test for caching
-    [`/api/usercommons/forcurrentuser?commonsId=${commonsId}`],
-  );
+  const mutationbuy = useBackendMutation(objectToAxiosParamsBuy, null, [
+    `/api/usercommons/forcurrentuser?commonsId=${commonsId}`,
+  ]);
   // Stryker restore all
 
   const onBuy = (userCommons, numCows) => {
@@ -178,6 +188,11 @@ export default function PlayPage() {
           {hidden && (
             <h1>This commons has been hidden by the site administrator.</h1>
           )}
+
+          {allowed && !!currentAnnouncements && (
+            <CurrentAnnouncements announcements={currentAnnouncements} />
+          )}
+
           {allowed && !!currentUser && (
             <CommonsPlay currentUser={currentUser} />
           )}
