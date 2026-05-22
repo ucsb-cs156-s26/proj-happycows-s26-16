@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc bfc" id="L42" title="All 2 branches covered.">    for (CommonsFeatures feature : CommonsFeatures.values()) {</span>
 <span class="fc" id="L43">      String featureName = feature.name();</span>
 
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">      if (requestBody.containsKey(featureName)) {</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">      if (requestBody.containsKey(featureName)) {</span>
 <span class="fc" id="L46">        boolean enabled = Boolean.parseBoolean(requestBody.get(featureName).toString());</span>
 
 <span class="fc" id="L48">        CommonsFeature commonsFeature =</span>
