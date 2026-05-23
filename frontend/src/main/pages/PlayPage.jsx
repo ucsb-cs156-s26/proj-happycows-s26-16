@@ -186,6 +186,7 @@ export default function PlayPage() {
             <CommonsOverview
               commonsPlus={commonsPlus}
               currentUser={currentUser}
+              currentAnnouncements={allowed ? currentAnnouncements : undefined}
             />
           )}
           <br />
