@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/39</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/39</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
@@ -117,26 +117,38 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">65x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">65x</span>
-<span class="cline-any cline-yes">53x</span>
-<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">85x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">85x</span>
+<span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-yes">73x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
@@ -151,7 +163,6 @@
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,9 +181,10 @@
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from "react";
-import { Alert, Button } from "react-bootstrap";
+<span class="cline-any cline-yes">12x</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+&nbsp;
+const MAX_ANNOUNCEMENT_LENGTH = 120;
 &nbsp;
 export default function CurrentAnnouncements({ announcements }) {
   const [expanded, setExpanded] = useState({});
@@ -188,22 +200,26 @@ export default function CurrentAnnouncements({ announcements }) {
     }));
   };
 &nbsp;
+  const getAnnouncementText = (announcement) =&gt; {
+    return announcement.announcementText<span class="branch-0 cbranch-no" title="branch not covered" > || announcement.message<span class="branch-0 cbranch-no" title="branch not covered" > </span>|| "";</span>
+  };
+&nbsp;
   return (
-    &lt;div data-testid="CurrentAnnouncements"&gt;
+    &lt;div data-testid="CurrentAnnouncements" className="mb-3"&gt;
       {announcements.map((announcement) =&gt; {
         const isExpanded = expanded[announcement.id];
-        const announcementText = announcement.announcementText;
-        const shouldCollapse = announcementText.length &gt; 120;
+        const announcementText = getAnnouncementText(announcement);
+        const shouldCollapse =
+          announcementText.length &gt; MAX_ANNOUNCEMENT_LENGTH;
 &nbsp;
         const displayedText =
           shouldCollapse &amp;&amp; !isExpanded
-            ? `${announcementText.substring(0, 120)}...`
+            ? `${announcementText.substring(0, MAX_ANNOUNCEMENT_LENGTH)}...`
             : announcementText;
 &nbsp;
         return (
-          &lt;Alert
+          &lt;div
             key={announcement.id}
-            variant="info"
             className="mb-2"
             data-testid={`CurrentAnnouncements-announcement-${announcement.id}`}
           &gt;
@@ -219,20 +235,19 @@ export default function CurrentAnnouncements({ announcements }) {
                 {isExpanded ? "Show less" : "Show more"}
               &lt;/Button&gt;
             )}
-          &lt;/Alert&gt;
+          &lt;/div&gt;
         );
       })}
     &lt;/div&gt;
   );
-}
-&nbsp;</pre></td></tr></table></pre>
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-18T08:30:07.124Z
+                at 2026-05-23T23:54:42.247Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
