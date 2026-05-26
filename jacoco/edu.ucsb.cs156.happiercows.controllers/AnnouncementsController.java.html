@@ -128,17 +128,47 @@ import java.util.Optional;
 <span class="fc" id="L128">        return ResponseEntity.ok(announcements);</span>
     }
 
+    @Operation(summary = &quot;Get current announcements&quot;, description = &quot;Get current announcements for a commons.&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ROLE_USER', 'ROLE_ADMIN')&quot;)
+    @GetMapping(&quot;/current&quot;)
+    public ResponseEntity&lt;Object&gt; getCurrentAnnouncements(
+        @Parameter(description = &quot;The id of the commons&quot;) @RequestParam Long commonsId) {
+
+<span class="fc" id="L137">        User user = getCurrentUser().getUser();</span>
+<span class="fc" id="L138">        Long userId = user.getId();</span>
+
+<span class="fc" id="L140">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))) {</span>
+<span class="fc" id="L142">            Optional&lt;UserCommons&gt; userCommonsLookup =</span>
+<span class="fc" id="L143">                userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
+<span class="fc" id="L146">                return ResponseEntity.status(HttpStatus.FORBIDDEN)</span>
+<span class="fc" id="L147">                    .body(&quot;User is not a member of this commons.&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L151">        int MAX_ANNOUNCEMENTS = 1000;</span>
+<span class="fc" id="L152">        Page&lt;Announcement&gt; announcements =</span>
+<span class="fc" id="L153">            announcementRepository.findCurrentByCommonsId(</span>
+                commonsId,
+<span class="fc" id="L155">                PageRequest.of(0, MAX_ANNOUNCEMENTS, Sort.by(&quot;startDate&quot;).descending())</span>
+            );
+
+<span class="fc" id="L158">        return ResponseEntity.ok(announcements.getContent());</span>
+    }
+
     @Operation(summary = &quot;Get announcements by id&quot;, description = &quot;Get announcement by its id.&quot;)
     @PreAuthorize(&quot;hasAnyRole('ROLE_USER', 'ROLE_ADMIN')&quot;)
     @GetMapping(&quot;/getbyid&quot;)
     public ResponseEntity&lt;Object&gt; getAnnouncementById(@Parameter(description = &quot;The id of the announcement&quot;) @RequestParam Long id) {
 
-<span class="fc" id="L136">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
-<span class="fc" id="L138">            return ResponseEntity.badRequest().body(&quot;Cannot find announcement. id is invalid.&quot;);</span>
+<span class="fc" id="L166">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
+<span class="fc" id="L168">            return ResponseEntity.badRequest().body(&quot;Cannot find announcement. id is invalid.&quot;);</span>
 
         }
-<span class="fc" id="L141">        return ResponseEntity.ok(announcementLookup.get());</span>
+<span class="fc" id="L171">        return ResponseEntity.ok(announcementLookup.get());</span>
     }
 
     @Operation(summary = &quot;Edit an announcement&quot;, description = &quot;Edit an announcement by its id.&quot;)
@@ -151,55 +181,55 @@ import java.util.Optional;
         @Parameter(description = &quot;The datetime at which the announcement will stop being shown (optional)&quot;) @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
         @Parameter(description = &quot;The announcement to be sent out&quot;) @RequestParam String announcementText) {
 
-<span class="fc" id="L154">        User user = getCurrentUser().getUser();</span>
-<span class="fc" id="L155">        Long userId = user.getId();</span>
+<span class="fc" id="L184">        User user = getCurrentUser().getUser();</span>
+<span class="fc" id="L185">        Long userId = user.getId();</span>
 
         // Make sure the user is part of the commons or is an admin
-<span class="fc" id="L158">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
-<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
-<span class="fc" id="L160">            log.info(&quot;User is not an admin&quot;);</span>
-<span class="fc" id="L161">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
+<span class="fc" id="L188">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
+<span class="fc" id="L190">            log.info(&quot;User is not an admin&quot;);</span>
+<span class="fc" id="L191">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
-<span class="fc" id="L164">                return ResponseEntity.badRequest().body(&quot;Commons_id must exist.&quot;);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
+<span class="fc" id="L194">                return ResponseEntity.badRequest().body(&quot;Commons_id must exist.&quot;);</span>
             }
         }
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (announcementText.isBlank()) {</span>
-<span class="fc" id="L169">            return ResponseEntity.badRequest().body(&quot;Announcement cannot be empty.&quot;);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (announcementText.isBlank()) {</span>
+<span class="fc" id="L199">            return ResponseEntity.badRequest().body(&quot;Announcement cannot be empty.&quot;);</span>
         }
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (announcementText.length() &gt; ANNOUNCEMENT_TEXT_MAX_LENGTH) {</span>
-<span class="fc" id="L172">            return ResponseEntity.badRequest().body(</span>
-<span class="fc" id="L173">                String.format(&quot;Announcement must be %d characters or fewer.&quot;, ANNOUNCEMENT_TEXT_MAX_LENGTH));</span>
-        }
-
-<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (startDate == null) {</span>
-<span class="fc" id="L177">            log.info(&quot;Start date not specified. Defaulting to current date.&quot;);</span>
-<span class="fc" id="L178">            startDate = LocalDateTime.now();</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (announcementText.length() &gt; ANNOUNCEMENT_TEXT_MAX_LENGTH) {</span>
+<span class="fc" id="L202">            return ResponseEntity.badRequest().body(</span>
+<span class="fc" id="L203">                String.format(&quot;Announcement must be %d characters or fewer.&quot;, ANNOUNCEMENT_TEXT_MAX_LENGTH));</span>
         }
 
-<span class="fc bfc" id="L181" title="All 4 branches covered.">        if (endDate != null &amp;&amp; startDate.isAfter(endDate)) {</span>
-<span class="fc" id="L182">            return ResponseEntity.badRequest().body(&quot;Start date must be before end date.&quot;);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (startDate == null) {</span>
+<span class="fc" id="L207">            log.info(&quot;Start date not specified. Defaulting to current date.&quot;);</span>
+<span class="fc" id="L208">            startDate = LocalDateTime.now();</span>
         }
 
-<span class="fc" id="L185">        Date startDateAsDate = toDate(startDate);</span>
-<span class="fc bfc" id="L186" title="All 2 branches covered.">        Date endDateAsDate = endDate == null ? null : toDate(endDate);</span>
+<span class="fc bfc" id="L211" title="All 4 branches covered.">        if (endDate != null &amp;&amp; startDate.isAfter(endDate)) {</span>
+<span class="fc" id="L212">            return ResponseEntity.badRequest().body(&quot;Start date must be before end date.&quot;);</span>
+        }
 
-<span class="fc" id="L188">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
+<span class="fc" id="L215">        Date startDateAsDate = toDate(startDate);</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        Date endDateAsDate = endDate == null ? null : toDate(endDate);</span>
 
-<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
-<span class="fc" id="L191">            return ResponseEntity.badRequest().body(&quot;Announcement could not be found. Invalid id.&quot;);</span>
+<span class="fc" id="L218">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
+
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
+<span class="fc" id="L221">            return ResponseEntity.badRequest().body(&quot;Announcement could not be found. Invalid id.&quot;);</span>
         }
 
         // Create the announcement
-<span class="fc" id="L195">        Announcement announcementObj = announcementLookup.get();</span>
-<span class="fc" id="L196">        announcementObj.setStartDate(startDateAsDate);</span>
-<span class="fc" id="L197">        announcementObj.setEndDate(endDateAsDate);</span>
-<span class="fc" id="L198">        announcementObj.setAnnouncementText(announcementText);</span>
+<span class="fc" id="L225">        Announcement announcementObj = announcementLookup.get();</span>
+<span class="fc" id="L226">        announcementObj.setStartDate(startDateAsDate);</span>
+<span class="fc" id="L227">        announcementObj.setEndDate(endDateAsDate);</span>
+<span class="fc" id="L228">        announcementObj.setAnnouncementText(announcementText);</span>
 
         // Save the announcement
-<span class="fc" id="L201">        announcementRepository.save(announcementObj);</span>
-<span class="fc" id="L202">        return ResponseEntity.ok(announcementObj);</span>
+<span class="fc" id="L231">        announcementRepository.save(announcementObj);</span>
+<span class="fc" id="L232">        return ResponseEntity.ok(announcementObj);</span>
     }
 
 
@@ -209,22 +239,22 @@ import java.util.Optional;
     public ResponseEntity&lt;Object&gt; deleteAnnouncement(@Parameter(description = &quot;The id of the chat message&quot;) @RequestParam Long id) {
 
         // Try to get the chat message
-<span class="fc" id="L212">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
-<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
-<span class="fc" id="L214">            return ResponseEntity.badRequest().body(&quot;Cannot find announcement. id is invalid.&quot;);</span>
+<span class="fc" id="L242">        Optional&lt;Announcement&gt; announcementLookup = announcementRepository.findByAnnouncementId(id);</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (!announcementLookup.isPresent()) {</span>
+<span class="fc" id="L244">            return ResponseEntity.badRequest().body(&quot;Cannot find announcement. id is invalid.&quot;);</span>
         }
-<span class="fc" id="L216">        Announcement announcementObj = announcementLookup.get();</span>
+<span class="fc" id="L246">        Announcement announcementObj = announcementLookup.get();</span>
 
-<span class="fc" id="L218">        User user = getCurrentUser().getUser();</span>
-<span class="fc" id="L219">        Long userId = user.getId();</span>
+<span class="fc" id="L248">        User user = getCurrentUser().getUser();</span>
+<span class="fc" id="L249">        Long userId = user.getId();</span>
 
         // Hide the message
-<span class="fc" id="L222">        announcementRepository.delete(announcementObj);</span>
-<span class="fc" id="L223">        return ResponseEntity.ok(announcementObj);</span>
+<span class="fc" id="L252">        announcementRepository.delete(announcementObj);</span>
+<span class="fc" id="L253">        return ResponseEntity.ok(announcementObj);</span>
     }
 
     private Date toDate(LocalDateTime localDateTime) {
-<span class="fc" id="L227">        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());</span>
+<span class="fc" id="L257">        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());</span>
     }
 
 
